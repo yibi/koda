@@ -1,489 +1,565 @@
-# KODA: Notes — Screen Flow & UX Map
+# Etch — Screen Flow & UX Map
 
 ## App Flow Overview
 
 ```
-                    ┌─────────────┐
-                    │  App Launch  │
-                    └──────┬──────┘
+                    ┌──────────────┐
+                    │  App Launch   │
+                    └──────┬───────┘
                            │
-                    ┌──────▼──────┐
-                    │ Workspace    │── No workspace set ──► ┌──────────────┐
-                    │ bookmark     │                       │ Folder Picker │
-                    │ exists?      │◄──────────────────────│ (Empty State) │
-                    └──────┬──────┘                       └──────────────┘
+                    ┌──────▼───────┐
+                    │ Workspace     │── No workspace ──► ┌──────────────┐
+                    │ bookmark      │    set             │  Onboarding  │
+                    │ exists?       │◄───────────────────│  (Empty State)│
+                    └──────┬───────┘                    └──────────────┘
                            │ Yes
-                    ┌──────▼──────┐
-                    │  MAIN VIEW   │
-                    │  (Route A or  │
-                    │   Route B)    │
-                    └──────┬──────┘
+                    ┌──────▼───────┐
+                    │  THE THRESHOLD │  (hold to enter)
+                    │  1.5s hold     │
+                    └──────┬───────┘
+                           │ Hold complete
+                    ┌──────▼───────┐
+                    │   THE CANVAS   │  (default view)
+                    │   (free-form   │
+                    │    writing)    │
+                    └──────┬───────┘
                            │
-              ┌────────────┴────────────┐
-              │                         │
-       ┌──────▼──────┐          ┌──────▼──────┐
-       │ ROUTE A:      │          │ ROUTE B:    │
-       │ Terminal     │◄─────────│ Note List   │
-       │ (default on   │  List btn│ (default if │
-       │  launch)      │─────────►│ notes exist)│
-       └──────┬──────┘          └──────┬──────┘
-              │                         │
-              │ Save note                │ Tap note
-              ▼                         ▼
-       ┌──────────────┐         ┌──────────────┐
-       │ Note saved   │         │ Note Editor  │
-       │ → back to     │         │ (Edit/Preview│
-       │ Terminal      │         │  toggle)     │
-       └──────────────┘         └──────┬──────┘
-                                        │
-                                 ┌──────┴──────┐
-                                 │ Shake phone │
-                                 ▼             ▼
-                          ┌────────────┐  ┌───────────┐
-                          │ Settings    │  │Spark Modal │
-                          │ (gear icon) │  │(3 random   │
-                          └────────────┘  │ sentences) │
-                                          └───────────┘
+              ┌────────────┼────────────┐
+              │            │            │
+       ┌──────▼──────┐  ┌──▼──────┐  ┌──▼──────────┐
+       │ Entry List   │  │ Vibe    │  │ Burn Folder │
+       │ (past entries│  │ Slider  │  │ (24h TTL    │
+       │  grouped by  │  │ (mood)  │  │  entries)   │
+       │  vibe/date)  │  └─────────┘  └──────┬──────┘
+       └──────┬──────┘                      │
+              │ Tap entry                    │ Write burn entry
+              ▼                              ▼
+       ┌──────────────┐              ┌──────────────┐
+       │ Entry Detail │              │ Burn Canvas  │
+       │ (read view)  │              │ (write +     │
+       │              │              │  countdown)  │
+       └──────┬───────┘              └──────┬───────┘
+              │                              │
+              │ Edit                         │ Save
+              ▼                              ▼
+       ┌──────────────┐              ┌──────────────┐
+       │ Canvas Edit  │              │  WAX SEAL    │
+       │ (+ Redact    │              │  (save anim) │
+       │  Tool)       │              └──────────────┘
+       └──────┬───────┘
+              │ Save
+              ▼
+       ┌──────────────┐
+       │  WAX SEAL    │
+       │  (save anim) │
+       └──────────────┘
+
+  Overlay features (available on Canvas):
+  ┌─────────────────────────────────────────────┐
+  │  THE ECHO          — once/day, past whisper  │
+  │  ANTI-JOURNAL      — shadow work prompts     │
+  │  INTERNAL WEATHER  — touch-paint mood        │
+  │  LOCAL PULSE       — green privacy heartbeat │
+  └─────────────────────────────────────────────┘
+
+  Monthly features (accessible from Entry List):
+  ┌─────────────────────────────────────────────┐
+  │  COLOR CLOUD     — monthly mood as art       │
+  │  END OF MONTH AURA — 5s shareable video      │
+  └─────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Screen-by-Screen Specs
 
-### SCREEN 1: Empty State — First Launch
+### SCREEN 1: Onboarding — First Launch
+
 ```
 ┌─────────────────────────────┐
 │                             │
-│          [ KODA ]            │
 │                             │
-│   Your notes. Your files.   │
-│       Your rules.            │
+│          [ etch ]            │
 │                             │
-│  Choose a folder to start.  │
+│   the algorithm can't       │
+│       see this.             │
+│                             │
+│  ──────────────────────     │
+│                             │
+│  Choose a folder for        │
+│  your journal.              │
 │  (iCloud Drive or local)    │
 │                             │
 │    ┌──────────────────┐     │
 │    │  Choose Folder   │     │
 │    └──────────────────┘     │
 │                             │
-│                             │
-│  No subscription.           │
-│  No account.                │
-│  No lock-in.                │
+│  Your entries are plain     │
+│  .md files. No server.      │
+│  No tracking. Nobody        │
+│  watching.                  │
 │                             │
 └─────────────────────────────┘
 
-Background: #0D0D0D (dark) / #FAFAFA (light)
-Text: #E8E8E8 / #1A1A1A
-Button: accent green #00FF88 (dark) / #00C853 (light)
-Font: SF Pro Display for title, SF Pro Text for body
-KODA logo: large, bold, centered, accent green
+Background: #000000 (OLED black)
+Text: #E8E8E8 (off-white)
+Brand text: #D4A574 (warm amber)
+Button: amber border, transparent fill
+Font: SF Pro Display Light for "etch", SF Pro Text for body
+Film grain: 2-3% opacity overlay
 ```
 
-### SCREEN 2: Folder Picker (System UI)
-- iOS `UIDocumentPickerViewController` — system native, not custom UI
-- User selects ANY folder (iCloud Drive, On My iPhone, etc.)
-- App stores security-scoped bookmark
-- On success → go to Screen 3 (Terminal) or Screen 4 (Note List)
+### SCREEN 2: The Threshold — Hold to Enter
 
-### SCREEN 3: Terminal Editor — Default Main View
 ```
 ┌─────────────────────────────┐
-│ koda:~$              [List] │  ← Header: monospace, secondary color
-├─────────────────────────────┤
-│                             │
-│ █                           │  ← Blinking cursor (accent green)
 │                             │
 │                             │
 │                             │
 │                             │
 │                             │
 │                             │
+│         ┌─────────┐         │
+│         │  ◯      │         │
+│         │ (hold)  │         │
+│         └─────────┘         │
 │                             │
-├─────────────────────────────┤
-│ @folder = save to subfolder  │  ← Hint text (secondary, small)
-│ Double newline = save       │
+│         hold to enter        │
+│                             │
+│                             │
+│                             │
+│                  ◉ (pulse)  │
 └─────────────────────────────┘
 
-Background: #000000 (pure black for terminal feel)
+Background: #000000
+Hold circle: #666666 outline, fills with #D4A574 as held
+Hint text: #E8E8E8 at 40% opacity, fades as hold progresses
+Local Pulse: bottom-right corner, green #00C853, pulsing
+Haptics: light on hold start, heavy on completion
+Animation: circle fills clockwise over 1.5s, then screen dissolves to Canvas
+Film grain: visible during hold (the "surface" you're pressing into)
+```
+
+### SCREEN 3: The Canvas — Writing Surface
+
+```
+┌─────────────────────────────┐
+│  Mon Jun 28  ◉              │  ← date (SF Mono, gray) + Local Pulse
+│                             │
+│  ─────────────────────      │  ← vibe color gradient fills canvas
+│                             │
+│  |                          │  ← blinking cursor (tap anywhere)
+│                             │
+│                             │
+│                             │
+│  ─────────────────────      │
+│  ◄ chaotic  static  ►       │  ← Vibe Slider (bottom)
+│                  🔥  ☾  ◉   │  ← Burn | Prompts | Pulse icons
+└─────────────────────────────┘
+
+Background: Vibe-dependent gradient (Chaotic = deep red/black, etc.)
+Text: #E8E8E8 (off-white)
+Vibe Slider: Bottom bar, 4 positions, haptic tick on change
+Icons: Burn (🔥), Anti-Journal Prompts (☾), Local Pulse (◉) — subtle, bottom-right
+No "New Entry" button. No title field. No toolbar. Just space.
+Tap anywhere on canvas → cursor appears → type.
+Auto-save on background or 3s inactivity → triggers Wax Seal.
+```
+
+### SCREEN 4: The Wax Seal — Save Animation
+
+```
+┌─────────────────────────────┐
+│                             │
+│                             │
+│         ┌─────────┐         │
+│         │ ████████│         │  ← warm amber circle pools
+│         │ ████████│         │    and solidifies
+│         │ ████████│         │
+│         └─────────┘         │
+│                             │
+│      [ entry sealed ]       │  ← subtle text, fades
+│                             │
+└─────────────────────────────┘
+
+Phase 1 (0.5s): Amber circle expands from center, opacity 0 → 0.7
+Phase 2 (0.5s): Circle solidifies, color deepens
+Phase 3 (0.3s): Scale bounce (1.0 → 1.1 → 1.0) + heavy haptic
+Phase 4 (0.7s): Fade to entry list or canvas
+Total: ~2.0 seconds. Tap to dismiss after stamp phase.
+```
+
+### SCREEN 5: Entry List — Past Entries
+
+```
+┌─────────────────────────────┐
+│  ◄ etch                     │
+│                             │
+│  This Month                 │
+│  ┌─────────────────────────┐│
+│  │ ●  Jun 28  2:14am       ││  ← vibe color dot
+│  │    I can't sleep again.. ││    + first line preview
+│  │    chaotic               ││    + vibe label
+│  └─────────────────────────┘│
+│  ┌─────────────────────────┐│
+│  │ ●  Jun 27  11:30pm      ││
+│  │    today was a lot       ││
+│  │    melancholy            ││
+│  └─────────────────────────┘│
+│  ┌─────────────────────────┐│
+│  │ ●  Jun 26  9:00pm       ││
+│  │    actually good day?    ││
+│  │    glowing               ││
+│  └─────────────────────────┘│
+│                             │
+│  ┌─────────────────────────┐│
+│  │  📊  Color Cloud         ││  ← monthly mood art
+│  │  📹  End of Month Aura   ││  ← shareable video
+│  └─────────────────────────┘│
+│                             │
+│  ─────────────────────      │
+│  + new entry (canvas)       │  ← returns to Canvas
+│  🔥 burn folder             │
+│  ⚙  settings                │
+└─────────────────────────────┘
+
+Background: #000000
+Cards: #0A0A0A surface, subtle border
+Vibe dot: colored per vibe (red/gray/purple/amber)
+Text: #E8E8E8 primary, #666666 secondary
+No streak counter. No "you journaled 3 days in a row!" No guilt.
+Entries sorted by date (most recent first) or grouped by vibe (toggle in settings).
+```
+
+### SCREEN 6: Entry Detail — Reading a Past Entry
+
+```
+┌─────────────────────────────┐
+│  ◄ back        edit         │
+│                             │
+│  Mon Jun 28, 2:14am         │
+│  ● chaotic                  │
+│                             │
+│  ─────────────────────      │
+│                             │
+│  I can't sleep again.       │
+│  My brain won't shut up     │
+│  about tomorrow.            │
+│                             │
+│  I keep thinking about      │
+│  what she said and I know   │
+│  I shouldn't care but ████  │  ← redacted text (black bars)
+│  and it's eating me alive.  │
+│                             │
+│  ─────────────────────      │
+│                  ◉ (pulse)  │
+└─────────────────────────────┘
+
+Background: Vibe gradient (same as when entry was written)
 Text: #E8E8E8
-Cursor: #00FF88 blinking
-Header: SF Mono 14pt, #888888
-Input: SF Mono 15pt, #E8E8E8
-Hints: SF Mono 11pt, #555555
-List button: SF Pro Text 14pt, accent green
-
-Behavior:
-- Auto-focus keyboard on appear
-- Cursor blinks until user types
-- @prefix parsed on save → creates subfolder
-- Double newline saves note → clears input → cursor returns
-- "List" button → dismiss to Note List
-- If no notes exist and user dismisses → goes to Note List (empty)
+Redacted text: Solid black bars (#000000) over text position
+Edit button: Opens Canvas with entry content loaded
+Local Pulse: bottom-right, green, pulsing
 ```
 
-### SCREEN 4: Note List — With Decay
+### SCREEN 7: Internal Weather — Touch Painting
+
 ```
 ┌─────────────────────────────┐
-│ KODA              [⚙]  [+]  │  ← Nav bar: title left, settings, new
-├─────────────────────────────┤
-│ ● Project Alpha              │  ← 100% opacity (modified today)
-│   Last sentence preview...   │
-│   247 words · 2h ago         │
-├─────────────────────────────┤
-│ ● Meeting Notes              │  ← 95% opacity (modified 2 days)
-│   Last sentence preview...   │
-│   340 words · 2d ago         │
-├─────────────────────────────┤
-│ ● Ideas Dump                 │  ← 70% opacity (modified 15 days)
-│   Last sentence preview...   │
-│   1.2k words · 15d ago       │
-├─────────────────────────────┤
-│ ○ Old Note                   │  ← 40% opacity (modified 60 days)
-│   Last sentence preview...   │
-│   89 words · 60d ago         │
-├─────────────────────────────┤
-│ ○ Ancient Note               │  ← 20% opacity (modified 120 days)
-│   Last sentence preview...   │
-│   45 words · 120d ago        │
-├─────────────────────────────┤
-│                              │
-│  Swipe left → delete          │
-│  Tap → open note              │
-│                              │
+│  ◄ back                     │
+│                             │
+│  paint how you feel         │
+│                             │
+│  ─────────────────────      │
+│                             │
+│     ·    ··                 │
+│   ·██████·                  │  ← touch trails leave color
+│    ·████··                  │    and texture
+│     ····                    │
+│                             │
+│                             │
+│  ─────────────────────      │
+│  (touch anywhere.           │
+│   there are no wrong        │
+│   colors.)                  │
+│                  ◉ (pulse)  │
 └─────────────────────────────┘
 
-Nav bar: #1A1A1A bg, #E8E8E8 text
-Note rows: no card background, full-bleed divider lines (#333333)
-● = bright dot (recent), ○ = faded dot (old)
-Title: SF Pro Text 16pt Semibold
-Preview: SF Pro Text 13pt Regular, #999999, single line truncated
-Meta: SF Mono 11pt, #666666
-Decay: opacity applied to entire row EXCEPT nav bar
-Swipe-to-delete: red background, white trash icon
-
-Behavior:
-- Sorted by modificationDate (newest first)
-- Opacity calculated by days since modification (see TDD section 3.1)
-- Tap any note → Screen 5 (Note Editor)
-- [+] button → Screen 3 (Terminal)
-- [⚙] button → Screen 7 (Settings)
-- Long-press note → context menu: Share, Move, Seal
+Background: #000000 (starts blank)
+Touch trails: Color depends on pressure/speed
+  - Slow/gentle: cool blues
+  - Fast/aggressive: reds
+  - Slow/heavy: dark purples
+  - Light/scattered: whites
+Haptics: Intensity mapped to touch force
+Save: Snapshot stored alongside entry. Can be used without text.
+No brush picker. No color palette. No undo. Raw expression only.
 ```
 
-### SCREEN 5: Note Editor — Edit Mode
+### SCREEN 8: The Echo — Past Entry Whisper
+
 ```
 ┌─────────────────────────────┐
-│ ‹ Notes   [Edit│Preview] 🔒 │  ← Nav bar: back, toggle, seal
-├─────────────────────────────┤
-│                              │
-│ # Project Alpha              │  ← Raw markdown in editor
-│                              │
-│ This is a **bold** statement │
-│ and a `code` reference.      │
-│                              │
-│ - Item one                   │
-│ - Item two                   │
-│                              │
-│ ## Subsection                │
-│                              │
-│ More text here...            │
-│                              │
-├─────────────────────────────┤
-│ ✓ Saved · 247 words         │  ← Status bar
+│                             │
+│  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─     │
+│                             │
+│  "I felt this before        │
+│   and I'm still here."      │
+│                             │
+│  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─     │
+│                             │
+│  ┌─────────────────────────┐│
+│  │ Mar 14  ·  melancholy   ││
+│  │                         ││
+│  │ "some days the weight   ││  ← one sentence from
+│  │  is just... heavy."     ││    a past entry
+│  │                         ││
+│  │  tap to read            ││
+│  └─────────────────────────┘│
+│                             │
+│         swipe to dismiss     │
+│                             │
 └─────────────────────────────┘
 
-Nav bar: #1A1A1A bg
-Toggle: segmented control [Edit | Preview], accent green when active
-Seal button: lock icon, #888888 (unsealed) / accent green (sealed)
-Editor: SF Mono 15pt, #E8E8E8, black bg
-Status bar: SF Mono 11pt, #666666, "✓ Saved" in accent green
-
-Behavior:
-- Opens in Edit mode by default (unless Read-Only toggle was last set)
-- Auto-save: debounce 1.5s after last keystroke
-- Save indicator: "✓ Saved" appears briefly after save
-- Word count updates live
-- [Preview] → Screen 6 (Preview mode)
-- 🔒 tap → seal note (24hr lock)
-- Long-press 🔒 → break seal (with confirmation)
-- Swipe down / back → save and return to list
+Appears as overlay on Threshold or Canvas (once per day max).
+Background: semi-transparent black over canvas
+Card: #0A0A0A with subtle border, faded vibe gradient
+Text: #E8E8E8, italic for the whisper
+One entry. One sentence. Once a day. Then gone.
+Not "On This Day." Vibe-resonance matched.
 ```
 
-### SCREEN 6: Note Editor — Preview Mode
+### SCREEN 9: Anti-Journal Prompts
+
 ```
 ┌─────────────────────────────┐
-│ ‹ Notes   [Edit│Preview] 🔒 │
-├─────────────────────────────┤
-│                              │
-│ Project Alpha                │  ← Rendered H1, SF Pro Display 24pt Bold
-│                              │
-│ This is a **bold** statement │  ← "bold" in bold
-│ and a `code` reference.      │  ← "code" in SF Mono, bg #1A1A1A, accent green
-│                              │
-│ • Item one                   │  ← Bulleted list
-│ • Item two                   │
-│                              │
-│ Subsection                   │  ← Rendered H2, SF Pro Display 20pt Bold
-│                              │
-│ More text here...            │
-│                              │
+│                             │
+│                             │
+│                             │
+│  What did you pretend       │
+│  not to feel today?         │
+│                             │
+│                             │
+│                             │
+│  ─────────────────────      │
+│  write  ·  another  ·  ✕    │
+│                             │
 └─────────────────────────────┘
 
-Preview: swift-markdown-ui Markdown() view
-Theme: basic, with accent green for code/links
-Background: #0D0D0D (dark) / #FAFAFA (light)
-Text: #E8E8E8
-
-Behavior:
-- Read-only — no editing possible
-- Same nav bar as Edit mode
-- [Edit] → back to Screen 5
-- If note is sealed, Preview is forced (can't switch to Edit)
+Background: #000000 with subtle film grain
+Prompt text: #E8E8E8, SF Pro Display Light, centered, large
+Buttons: text-only, gray, minimal
+Tap "write" → prompt stays as faint overlay on Canvas, user writes below
+Tap "another" → new random prompt from same category
+Tap "✕" → dismiss, return to Canvas
+No streak tracking. No "you completed 7 prompts!" No gamification.
 ```
 
-### SCREEN 7: Settings — Config File Aesthetic
+### SCREEN 10: The Burn Folder
+
 ```
 ┌─────────────────────────────┐
-│ ‹ Notes                     │
-├─────────────────────────────┤
-│ # KODA Configuration         │  ← Monospace header
-│ # Version 1.0.0              │
-│ # Generated: 2026-06-27     │
-│                              │
-│ [workspace]                  │
-│ path = ~/iCloud/Notes        │
-│ files = 247                  │
-│                          [Change]
-│                              │
-│ [appearance]                 │
-│ theme = dark            [▾]  │
-│ decay_rate = default    [▾]  │
-│   off / fast / default / slow │
-│                              │
-│ [pro]                        │
-│ status = locked         [🔒] │
-│                          [Unlock $14.99]
-│                              │
-│ [about]                      │
-│ version = 1.0.0              │
-│ philosophy = "Your files,    │
-│   your cloud, your rules"    │
-│ guarantee = "End of Life:    │
-│   open source if abandoned"  │
-│                              │
-│ [danger]                     │
-│                      [Reset] │
-│                      [Change Folder]
+│  ◄ back                     │
+│                             │
+│  burn                       │
+│  ─────────────────────      │
+│                             │
+│  ┌─────────────────────────┐│
+│  │ ●  burns in 18:42:31    ││  ← countdown timer
+│  │    I'm so angry at      ││
+│  │    them right now...    ││
+│  │    chaotic              ││
+│  └─────────────────────────┘│
+│  ┌─────────────────────────┐│
+│  │ ●  burns in 03:15:00    ││
+│  │    the text I'll never  ││
+│  │    send...              ││
+│  │    melancholy           ││
+│  └─────────────────────────┘│
+│                             │
+│  ─────────────────────      │
+│  + new burn entry           │
+│                             │
+│  these entries self-delete  │
+│  in 24 hours. permanently.  │
+│  no recovery. no trace.     │
 └─────────────────────────────┘
 
-Font: SF Mono 14pt throughout (config file aesthetic)
-Headers (#): #888888
-Keys: #E8E8E8
-Values: #00FF88 (accent green)
-Buttons: standard iOS buttons, accent green
-Background: #0D0D0D
-
-Behavior:
-- Looks like a config file — monospace, key = value format
-- [Change] → opens Folder Picker (Screen 2)
-- [Unlock $14.99] → StoreKit 2 purchase flow
-- [Reset] → confirmation dialog → clears metadata, keeps files
-- [Change Folder] → confirmation → current workspace bookmark cleared
+Background: #000000 (slightly warmer/darker than main canvas)
+Cards: #0A0A0A with warm amber border accent
+Countdown: SF Mono, amber color
+Vibe dot: same colors as main entries
+Warning text: #666666, small, at bottom
+Burn entries are NOT in search. NOT in Echo. NOT in Color Cloud.
 ```
 
-### SCREEN 8: Shake Spark — Modal
+### SCREEN 11: The Redact Tool — In Editor
+
 ```
 ┌─────────────────────────────┐
-│                              │
-│   ✨ SPARK                    │
-│                              │
-│ ┌─────────────────────────┐ │
-│ │ "The best time to plant  │ │
-│ │  a tree was 20 years     │ │
-│ │  ago. The second best    │ │
-│ │  time is now."           │ │
-│ │  — ideas-dump.md         │ │
-│ └─────────────────────────┘ │
-│                              │
-│ ┌─────────────────────────┐ │
-│ │ "Systems survive when    │ │
-│ │  people don't."          │ │
-│ │  — project-alpha.md      │ │
-│ └─────────────────────────┘ │
-│                              │
-│ ┌─────────────────────────┐ │
-│ │ "Simple is harder than   │ │
-│ │  complex."              │ │
-│ │  — quotes.md            │ │
-│ └─────────────────────────┘ │
-│                              │
-│  [Save as Note]  [Shake ↻]  │
-│                      [✕]     │
+│  ◄ back                     │
+│                             │
+│  I'm so tired of [██████]   │  ← selected text
+│  and I can't take it          │    highlighted
+│  anymore.                     │
+│                             │
+│  ─────────────────────      │
+│  ┌───────────────────────┐  │
+│  │  Redact permanently?  │  │  ← minimal confirmation
+│  │                       │  │
+│  │  This cannot be       │  │
+│  │  undone.              │  │
+│  │                       │  │
+│  │  [Redact]  [Cancel]   │  │
+│  └───────────────────────┘  │
+│                             │
 └─────────────────────────────┘
 
-Modal: presented over current screen
-Card bg: #1A1A1A with subtle border #333333
-Quote text: SF Pro Text 15pt, #E8E8E8
-Source: SF Mono 11pt, #888888
-Buttons: accent green border, transparent bg
-Title: SF Pro Display 18pt Bold, accent green
-
-Behavior:
-- Triggered by shake gesture
-- 3 random sentences from 3 different random .md files
-- [Save as Note] → creates new .md with all 3 quotes → dismiss
-- [Shake ↻] → re-roll new 3 sentences
-- [✕] → dismiss modal
-- If < 3 notes exist → show message: "Need at least 3 notes to spark"
+Redact replaces selected text with █ (U+2588) in the .md file.
+Original text is NOT stored anywhere. Permanent.
+Haptic: heavy impact on redact confirmation.
 ```
 
-### SCREEN 9: Sealed Note — Edit Attempt Blocked
+### SCREEN 12: The Color Cloud — Monthly Mood Art
+
 ```
 ┌─────────────────────────────┐
-│ ‹ Notes   [Edit│Preview] 🔒 │
-├─────────────────────────────┤
-│                              │
-│                              │
-│      🔒 SEALED               │
-│                              │
-│   This note is sealed.       │
-│   Unlocks in 18h 32m.       │
-│                              │
-│   ┌────────────────────┐    │
-│   │  Read in Preview    │    │  ← Button → forces Preview mode
-│   └────────────────────┘    │
-│                              │
-│   Long-press 🔒 to break.   │  ← Hint text, #555555
-│                              │
+│  ◄ back                     │
+│                             │
+│  June 2026                  │
+│                             │
+│  ┌─────────────────────────┐│
+│  │                         ││
+│  │   ░ ▒ ▓ █ ▒ ░ ▒ ▓ ░    ││  ← abstract color field
+│  │    ▒ █ ▓ ░ ▒ █ ▓ ▒     ││    generated from
+│  │  ░ ▓ █ ▒ ░ ▒ ▓ █ ░     ││    monthly vibe data
+│  │   █ ▒ ░ ▓ █ ▒ ░ ▓      ││
+│  │  ░ ▒ ▓ █ ▒ ░ ▒ ▓ ░    ││
+│  │                         ││
+│  └─────────────────────────┘│
+│                             │
+│  your month in color.       │
+│  no words. no entries.      │
+│  just vibes.                │
+│                             │
+│  ┌────────┐  ┌───────────┐  │
+│  │  Save  │  │  Share    │  │
+│  └────────┘  └───────────┘  │
+│                             │
+│  ─────────────────────      │
+│  📹 Generate End of Month   │  ← link to Aura video
+│    Aura video               │
 └─────────────────────────────┘
 
-Lock icon: large, centered, #888888
-Text: SF Pro Text 16pt, #888888
-Button: accent green border
-
-Behavior:
-- Shows when user taps [Edit] on a sealed note
-- [Read in Preview] → switches to Preview mode (Screen 6)
-- Long-press 🔒 in nav bar → "Break seal?" confirmation → removes seal
+Background: #000000
+Color cloud: SwiftUI Canvas or Metal, abstract gradient/particle field
+Each day = one segment, colored by that day's vibe(s)
+Save: UIImageWriteToSavedPhotosAlbum
+Share: UIActivityViewController (Instagram, TikTok, etc.)
+No text, no entries, no private data. Purely color from mood.
 ```
 
-### SCREEN 10: Folder Picker Success → Note List (Empty)
+### SCREEN 13: End of Month Aura — Shareable Video
+
 ```
 ┌─────────────────────────────┐
-│ KODA              [⚙]  [+]  │
-├─────────────────────────────┤
-│                              │
-│                              │
-│      No notes yet.           │
-│                              │
-│      Just start typing.      │
-│                              │
-│   ┌────────────────────┐    │
-│   │   Start Writing     │    │  ← Button → Terminal (Screen 3)
-│   └────────────────────┘    │
-│                              │
-│   Your .md files will        │
-│   appear here.               │
-│                              │
-│                              │
+│                             │
+│  ┌─────────────────────────┐│
+│  │                         ││
+│  │   [animated color       ││  ← 5-second video
+│  │    field, colors        ││    vertical 1080x1920
+│  │    shifting and         ││
+│  │    blending over time]  ││
+│  │                         ││
+│  │                         ││
+│  │                         ││
+│  │           etch          ││  ← subtle watermark
+│  └─────────────────────────┘│
+│                             │
+│  your month in motion.      │
+│  5 seconds. no words.       │
+│                             │
+│  ┌────────┐  ┌───────────┐  │
+│  │  Save  │  │  Share to  │  │
+│  └────────┘  │  TikTok    │  │
+│              └───────────┘  │
 └─────────────────────────────┘
 
-Same styling as Screen 1 empty state
-Button: accent green
-Text: SF Pro Text 16pt, #888888
+Video: 5 seconds, 1080x1920 (vertical), 30fps
+Content: Animated Color Cloud data — colors shift, blend, pulse
+Audio: Silent or optional ambient tone
+Watermark: "etch" in corner (disable in settings)
+Export: Save to Photos or share directly to TikTok/Instagram/Shorts
+Zero private data. No text. No entries. Just colors in motion.
+```
+
+### SCREEN 14: Settings
+
+```
+┌─────────────────────────────┐
+│  ◄ back                     │
+│                             │
+│  settings                   │
+│  ─────────────────────      │
+│                             │
+│  Sanctuary                  │
+│  ┌─────────────────────────┐│
+│  │ Haptics          [ on ] ││
+│  │ Local Pulse      [ on ] ││
+│  │ The Echo         [ on ] ││
+│  └─────────────────────────┘│
+│                             │
+│  Prompts                    │
+│  ┌─────────────────────────┐│
+│  │ Shadow Work      [ on ] ││
+│  │ Anxiety          [ on ] ││
+│  │ Identity         [ on ] ││
+│  │ Relationships   [off ] ││
+│  │ Existential     [off ] ││
+│  └─────────────────────────┘│
+│                             │
+│  Privacy                    │
+│  ┌─────────────────────────┐│
+│  │ App Lock (Face ID)[off ]││
+│  │ Aura Watermark   [ on ] ││
+│  └─────────────────────────┘│
+│                             │
+│  About                      │
+│  ┌─────────────────────────┐│
+│  │ End of Life Guarantee   ││
+│  │ Privacy Policy          ││
+│  │ Version 1.0             ││
+│  └─────────────────────────┘│
+│                             │
+│  ─────────────────────      │
+│  ◉ your entries never       │
+│    leave this device        │
+└─────────────────────────────┘
+
+Background: #000000
+Sections: SF Pro Display Light, gray headers
+Toggles: System toggle style, amber accent when on
+No "upgrade to pro" buttons. No ads. No cross-promotion.
+End of Life Guarantee: "If we abandon this app, we open-source the code."
 ```
 
 ---
 
-## Navigation Map Summary
+## Navigation Summary
 
-```
-                    ┌──────────────┐
-                    │  Empty State  │
-                    │  (Screen 1)   │
-                    └──────┬───────┘
-                           │ Choose Folder
-                    ┌──────▼───────┐
-                    │ Folder Picker │
-                    │ (Screen 2)   │
-                    └──────┬───────┘
-                           │
-              ┌────────────┴────────────┐
-              │                         │
-       ┌──────▼──────┐          ┌──────▼──────┐
-       │  Terminal    │          │ Note List    │
-       │ (Screen 3)  │◄─────────│ (Screen 4)   │
-       │  default    │  List    │  if notes    │
-       │  on launch  │─────────►│  exist       │
-       └──────┬──────┘          └──────┬──────┘
-              │                         │ tap note
-              │ save                    │
-              │                         ▼
-              │                  ┌──────────────┐
-              │                  │ Note Editor   │
-              │                  │ (Screen 5/6) │
-              │                  │ Edit|Preview │
-              │                  └──────┬───────┘
-              │                         │
-              │              ┌──────────┼──────────┐
-              │              │          │          │
-              │              ▼          ▼          ▼
-              │        ┌──────┐  ┌──────┐  ┌──────┐
-              │        │Sealed│  │Shake │  │Setts │
-              │        │ Blk  │  │Spark │  │      │
-              │        │(Sc 9)│  │(Sc 8)│  │(Sc 7)│
-              │        └──────┘  └──────┘  └──────┘
-              │
-              ▼
-        Back to Terminal (Screen 3) or Note List (Screen 4)
-```
-
----
-
-## Design System Summary
-
-### Colors
-
-| Token | Dark Mode | Light Mode |
-|-------|-----------|------------|
-| `bg.primary` | #000000 | #FAFAFA |
-| `bg.surface` | #0D0D0D | #FFFFFF |
-| `bg.elevated` | #1A1A1A | #F5F5F5 |
-| `text.primary` | #E8E8E8 | #1A1A1A |
-| `text.secondary` | #999999 | #666666 |
-| `text.tertiary` | #555555 | #AAAAAA |
-| `accent` | #00FF88 | #00C853 |
-| `divider` | #333333 | #E0E0E0 |
-| `danger` | #FF6B6B | #D32F2F |
-| `success` | #00C853 | #2E7D32 |
-
-### Typography
-
-| Token | Font | Size | Weight |
-|-------|------|------|--------|
-| `font.display` | SF Pro Display | 24pt | Bold |
-| `font.heading` | SF Pro Display | 20pt | Bold |
-| `font.body` | SF Pro Text | 16pt | Regular |
-| `font.caption` | SF Pro Text | 13pt | Regular |
-| `font.meta` | SF Mono | 11pt | Regular |
-| `font.mono` | SF Mono | 15pt | Regular |
-| `font.terminal` | SF Mono | 15pt | Regular |
-
-### Spacing
-
-| Token | Value |
-|-------|-------|
-| `space.xs` | 4pt |
-| `space.sm` | 8pt |
-| `space.md` | 16pt |
-| `space.lg` | 24pt |
-| `space.xl` | 32pt |
-
-### Corner Radius
-
-| Token | Value |
-|-------|-------|
-| `radius.sm` | 4pt (buttons) |
-| `radius.md` | 8pt (cards) |
-| `radius.none` | 0pt (full-bleed rows) |
+| From | To | How |
+|------|-----|-----|
+| Launch (no workspace) | Onboarding | Automatic |
+| Launch (workspace set) | Threshold | Automatic |
+| Threshold (hold complete) | Canvas | Automatic (dissolve transition) |
+| Canvas | Entry List | Swipe or tap list icon |
+| Canvas | Burn Folder | Tap burn icon |
+| Canvas | Internal Weather | Tap weather icon (or gesture) |
+| Canvas | Anti-Journal Prompt | Tap prompt icon |
+| Canvas (save) | Wax Seal → Entry List | Automatic |
+| Entry List | Entry Detail | Tap entry card |
+| Entry Detail | Canvas (edit mode) | Tap "edit" |
+| Entry List | Color Cloud | Tap "Color Cloud" |
+| Color Cloud | End of Month Aura | Tap "Generate Aura" |
+| Any screen | Settings | Gear icon (in Entry List) |
+| Any screen | Canvas | "+ new entry" or back to Canvas |

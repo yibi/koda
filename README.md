@@ -1,55 +1,55 @@
 # Etch
 
-**Your life story shouldn't have a monthly rent.**
+**The place the algorithm can't see.**
 
-Etch is a journaling app that saves every entry as a plain markdown file in your own iCloud. No subscription. No lock-in. No company that can lock you out of your own memories when your credit card expires.
-
-Pay once. Own forever. Your grandkids can read your journal in any text editor in 50 years.
+Etch is a journaling sanctuary for Gen Z. Not an archive. Not a productivity tool. A private space to decompress from the noise — where your thoughts exist as plain files on your own device, invisible to every platform, every advertiser, every algorithm.
 
 ## The Problem
 
-Day One charges $35/year to access your own memories. Miss a payment, they lock the doors. Your 5 years of journal entries — your child's first words, your grief, your joy — held hostage behind a paywall.
+Gen Z is the most anxious generation on record. 91% report psychological symptoms from stress. Their attention is shattered by 6-second loops. Their social lives are performative. Their data belongs to everyone except them.
 
-Your memories should not die with your credit card expiration date.
+Every journaling app on the App Store is built for millennials — legacy archives, "Dear Diary" long-form writing, streak guilt, gratitude prompts that feel like an HR wellness portal. None of them understand why a 19-year-old opens a journal at 2am.
+
+And they all want $35/year forever. Miss a payment, they lock the doors on your own thoughts.
 
 ## The Solution
 
-- **Plain files** — Every entry is a `.md` file in your iCloud. Open it in any text editor, on any device, forever.
-- **No subscription** — $24.99 one-time. That's it. No monthly rent on your own life story.
-- **No backend** — No servers. No cloud. No company that can go bankrupt and take your memories with it.
-- **No lock-in** — If Etch disappears tomorrow, your journal survives in your Files app.
-- **End of Life guarantee** — If we ever abandon this app, we open-source the entire codebase.
+- **A sanctuary, not a tool** — Built for decompression, not archiving. For surviving today, not remembering 20 years from now.
+- **Plain files** — Every entry is a `.md` file in your iCloud. The algorithm can't see it. No company can lock you out. No server can lose it.
+- **No subscription** — $24.99 one-time. Your safe space doesn't have a monthly rent.
+- **No backend** — No servers. No cloud. No analytics. No tracking. We literally cannot see your entries.
+- **No streak guilt** — No "you broke your 47-day streak!" notifications. You're already burned out. We're not adding more labor.
+- **No toxic positivity** — No "3 things you're grateful for" prompts. You can be grateful for coffee AND depressed about housing. Etch holds space for both.
 
 ## The Angle
 
-> *"When I die, my kids can find my physical journal on a shelf. If I use a subscription app, my memories die with my credit card expiration date. I built Etch so your story outlives the company that made the app."*
+> *"The algorithm sees everything. Your likes, your location, your messages, your purchases. Etch is the one place it can't look. Your thoughts live as plain files on your device. No server. No tracking. No company between you and your own mind."*
 
 ## Target Market
 
-- **Primary:** Millennials (28-43) experiencing Day One subscription fatigue
-- **Secondary:** Gen Z (15-25) who value privacy and data ownership
-- **Tertiary:** New parents documenting their child's milestones
-- **Language:** English → Japanese → German
+- **Primary:** Gen Z (15-25) who journal to decompress, not to archive
 - **Platform:** iOS first (iPhone + iPad)
+- **Language:** English → Japanese → German
 
 ## Pricing
 
 | Tier | Price | What you get |
 |------|-------|-------------|
-| Free | $0 | Read all entries, write up to 50 entries, one workspace |
-| Pro | $24.99 one-time | Unlimited entries, photos, PDF book export, themes, all future updates |
-| Lifetime Bundle | $49 one-time | All current + future Etch apps, forever |
+| Free | $0 | Up to 50 entries, all core sanctuary features |
+| Pro | $24.99 one-time | Unlimited entries, all features, all future updates |
+
+No "lifetime bundle." No tiers. No upsells. Pay once, own forever.
 
 ## Competitive Positioning
 
 | App | Price | The Problem |
 |-----|-------|-------------|
-| Day One | $35/year | Subscription, proprietary format, can lock you out, corporate-owned |
-| Journey | $40/year or $100+ "lifetime" | "Lifetime" feels risky, clunky UI |
+| Day One | $35/year | Subscription hostage, corporate-owned, millennial-focused, streak guilt |
+| Journey | $40/year | Same subscription trap, clunky UI |
+| Stoic | $40/year | Too "app-y," forced positivity, mood quizzes feel corporate |
+| Apple Journal | Free | Too basic, locked to Apple, no real privacy from the ecosystem |
 | Diarium | ~$15 one-time | Best non-sub competitor but UI looks like 2012 |
-| Apple Journal | Free | Too basic, locked to Apple, no export |
-| Stoic | $40/year | Too "app-y", prompts not long-form writing |
-| **Etch** | **$24.99 once** | **Beautiful, plain .md files, no subscription, no lock-in** |
+| **Etch** | **$24.99 once** | **Built for Gen Z sanctuary, plain .md files, no subscription, no tracking** |
 
 ## Tech Stack
 
@@ -59,41 +59,27 @@ Your memories should not die with your credit card expiration date.
 - **Sync:** Handled by iOS (iCloud Drive). We never touch it.
 - **Backend:** None. There is no backend.
 - **Monetization:** StoreKit 2 (one-time IAP)
-- **Analytics:** None. We don't track users.
-- **Dependencies:** `swift-markdown-ui` for rendering. That's it.
+- **Analytics:** None. We don't track users. We can't track users.
+- **Dependencies:** `swift-markdown-ui`, `KeychainAccess`
 
-## Project Structure
+## Repository Structure
 
 ```
-etch/
-├── README.md                  ← You are here
-├── PROJECT_PLAN.md            ← Full commercial + technical plan
-├── SPECS/
-│   ├── APP_SPEC.md            ← Detailed feature spec
-│   └── TECHNICAL_DESIGN.md    ← Architecture decisions (TBD — needs rewrite for journaling)
-├── DESIGN/
-│   ├── BRAND_GUIDE.md         ← Visual identity (TBD — needs rewrite for Etch)
-│   └── SCREEN_FLOW.md         ← Screen wireframes (TBD)
-├── MARKETING/
-│   ├── LAUNCH_PLAN.md         ← Launch playbook (TBD — needs rewrite)
-│   └── GUERRILLA_TACTICS.md   ← Unconventional marketing (TBD)
-└── SOURCE/                    ← Swift source (empty — ready for AI coding agents)
-```
-
-## How To Pick Up This Project
-
-```bash
-git clone https://github.com/yibi/etch.git
-cd etch
-# Read PROJECT_PLAN.md, SPECS/, DESIGN/
-# Point AI coding agent (Claude Code / Codex) at the specs
-# It writes Swift code into SOURCE/
+ETCH_Feature_Specification.pdf   12-feature spec (detailed)
+PROJECT_PLAN.md                  Full plan: timeline, revenue, launch
+SPECS/
+  APP_SPEC.md                    Feature specifications (12 features)
+  TECHNICAL_DESIGN.md            Architecture decisions for AI coding agents
+DESIGN/
+  BRAND_GUIDE.md                 Visual identity, tone, colors, typography
+  SCREEN_FLOW.md                 Screen-by-screen UX map
+  SCREEN_SPECS/                  Individual screen specifications
+MARKETING/
+  GUERRILLA_TACTICS.md           Unconventional marketing tactics
+  LAUNCH_PLAN.md                 Launch timeline and playbook
+SOURCE/                          Swift source code
 ```
 
 ## License
 
-Proprietary. Source code is private until launch. The End of Life guarantee commits to open-sourcing if the project is ever abandoned.
-
----
-
-*Etch — Carve your story. It won't wash away.*
+Proprietary. Source code will be open-sourced if the project is ever abandoned (End of Life guarantee in ToS).
